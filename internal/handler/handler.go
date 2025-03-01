@@ -206,7 +206,7 @@ func (h *Handler) NextDateHandler(w http.ResponseWriter, r *http.Request) {
 
 	now, err := time.Parse("20060102", nowStr)
 	if err != nil {
-		http.Error(w, "неверный формат даты для параметра 'now'", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
