@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/Oxygenss/yandex_go_final_project/internal/models"
-	"github.com/Oxygenss/yandex_go_final_project/internal/storage/migrations"
-	"github.com/Oxygenss/yandex_go_final_project/internal/storage/sqlite"
+	"github.com/Oxygenss/yandex_final_project/internal/models"
+	"github.com/Oxygenss/yandex_final_project/internal/storage/migrations"
+	"github.com/Oxygenss/yandex_final_project/internal/storage/sqlite"
 )
 
 type Repository interface {

@@ -6,8 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Oxygenss/yandex_go_final_project/internal/models"
-	repository "github.com/Oxygenss/yandex_go_final_project/internal/storage"
+	"github.com/Oxygenss/yandex_final_project/internal/models"
+	repository "github.com/Oxygenss/yandex_final_project/internal/storage"
+)
+
+const (
+	DateFormat = "20060102"
 )
 
 type Service struct {
@@ -31,19 +35,19 @@ func (s *Service) AddTask(task models.Task) (int64, error) {
 	}
 
 	now := time.Now()
-	nowFormatted := now.Format("20060102")
-	nowDate, _ := time.Parse("20060102", nowFormatted)
+	nowFormatted := now.Format(DateFormat)
+	nowDate, _ := time.Parse(DateFormat, nowFormatted)
 
 	if task.Date == "" {
 		task.Date = nowFormatted
 	} else {
-		parsedDate, err := time.Parse("20060102", task.Date)
+		parsedDate, err := time.Parse("DateFormat", task.Date)
 		if err != nil {
 			return 0, fmt.Errorf("invalid date format. Expected format is YYYYMMDD: %w", err)
 		}
 
 		if parsedDate.Equal(nowDate) {
-			task.Date = parsedDate.Format("20060102")
+			task.Date = parsedDate.Format("DateFormat")
 		} else if parsedDate.Before(now) {
 			if task.Repeat == "" {
 				task.Date = nowFormatted
@@ -76,19 +80,19 @@ func (s *Service) EditTask(task models.Task) error {
 	}
 
 	now := time.Now()
-	nowFormatted := now.Format("20060102")
-	nowDate, _ := time.Parse("20060102", nowFormatted)
+	nowFormatted := now.Format("DateFormat")
+	nowDate, _ := time.Parse("DateFormat", nowFormatted)
 
 	if task.Date == "" {
 		task.Date = nowFormatted
 	} else {
-		parsedDate, err := time.Parse("20060102", task.Date)
+		parsedDate, err := time.Parse("DateFormat", task.Date)
 		if err != nil {
 			return fmt.Errorf("invalid date format. Expected format is YYYYMMDD: %w", err)
 		}
 
 		if parsedDate.Equal(nowDate) {
-			task.Date = parsedDate.Format("20060102")
+			task.Date = parsedDate.Format("DateFormat")
 		} else if parsedDate.Before(now) {
 			if task.Repeat == "" {
 				task.Date = nowFormatted
@@ -145,13 +149,13 @@ func (s *Service) GetTasks() ([]models.Task, error) {
 }
 
 func (s *Service) SearchTasks(search string) ([]models.Task, error) {
-    time, err := time.Parse("02.01.2006", search)
-    if err == nil {
-        dateFormatted := time.Format("20060102")
-        return s.repository.SearchTasksByDate(dateFormatted)
-    }
+	time, err := time.Parse("02.01.2006", search)
+	if err == nil {
+		dateFormatted := time.Format("DateFormat")
+		return s.repository.SearchTasksByDate(dateFormatted)
+	}
 
-    return s.repository.SearchTasksByString(search)
+	return s.repository.SearchTasksByString(search)
 }
 
 func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string, error) {
@@ -159,7 +163,7 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 		return "", fmt.Errorf("нет правила повторения")
 	}
 
-	date, err := time.Parse("20060102", dateStr)
+	date, err := time.Parse("DateFormat", dateStr)
 	if err != nil {
 		return "", fmt.Errorf("неверный формат времени: %w", err)
 	}
@@ -179,14 +183,14 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 		for {
 			date = date.AddDate(0, 0, days)
 			if date.After(now) {
-				return date.Format("20060102"), nil
+				return date.Format("DateFormat"), nil
 			}
 		}
 	} else if repeat == "y" {
 		for {
 			date = date.AddDate(1, 0, 0)
 			if date.After(now) {
-				return date.Format("20060102"), nil
+				return date.Format("DateFormat"), nil
 			}
 		}
 	} else {

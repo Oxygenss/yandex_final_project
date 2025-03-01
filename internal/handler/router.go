@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Oxygenss/yandex_go_final_project/internal/handler/middleware"
+	"github.com/Oxygenss/yandex_final_project/internal/handler/middleware"
 	"github.com/go-chi/chi"
 )
 

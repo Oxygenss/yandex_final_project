@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/Oxygenss/yandex_go_final_project/internal/models"
+	"github.com/Oxygenss/yandex_final_project/internal/models"
 )
 
 type Repository struct {
@@ -77,7 +77,7 @@ func (r *Repository) GetTasks() ([]models.Task, error) {
 }
 
 func (r *Repository) SearchTasksByString(search string) ([]models.Task, error) {
-	query := `SELECT * FROM scheduler WHERE title LIKE ? OR comment LIKE ? ORDER BY date`
+	query := `SELECT id, date, title, comment, repeat FROM scheduler WHERE title LIKE ? OR comment LIKE ? ORDER BY date`
 
 	rows, err := r.db.Query(query, "%"+search+"%", "%"+search+"%")
 	if err != nil {
@@ -94,6 +94,10 @@ func (r *Repository) SearchTasksByString(search string) ([]models.Task, error) {
 		tasks = append(tasks, task)
 	}
 
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error after iterating rows: %w", err)
+	}
+
 	if tasks == nil {
 		tasks = []models.Task{}
 	}
@@ -102,7 +106,7 @@ func (r *Repository) SearchTasksByString(search string) ([]models.Task, error) {
 }
 
 func (r *Repository) SearchTasksByDate(date string) ([]models.Task, error) {
-	query := `SELECT * FROM scheduler WHERE date = ?`
+	query := `SELECT id, date, title, comment, repeat FROM scheduler WHERE date = ?`
 
 	rows, err := r.db.Query(query, date)
 	if err != nil {
@@ -117,6 +121,10 @@ func (r *Repository) SearchTasksByDate(date string) ([]models.Task, error) {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 		tasks = append(tasks, task)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error after iterating rows: %w", err)
 	}
 
 	if tasks == nil {

@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Oxygenss/yandex_go_final_project/internal/config"
-	"github.com/Oxygenss/yandex_go_final_project/internal/models"
-	"github.com/Oxygenss/yandex_go_final_project/internal/service"
+	"github.com/Oxygenss/yandex_final_project/internal/config"
+	"github.com/Oxygenss/yandex_final_project/internal/models"
+	"github.com/Oxygenss/yandex_final_project/internal/service"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -30,8 +30,6 @@ func (h *Handler) SignIn(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	defer r.Body.Close()
 
 	var AuthRequest models.SignInRequest
 	err = json.Unmarshal(body, &AuthRequest)
@@ -113,8 +111,6 @@ func (h *Handler) EditTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer r.Body.Close()
-
 	var task models.Task
 	err = json.Unmarshal(body, &task)
 	if err != nil {
@@ -186,8 +182,6 @@ func (h *Handler) AddTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	defer r.Body.Close()
 
 	var task models.Task
 	err = json.Unmarshal(body, &task)

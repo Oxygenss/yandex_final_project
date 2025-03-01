@@ -1,4 +1,4 @@
-module github.com/Oxygenss/yandex_go_final_project
+module github.com/Oxygenss/yandex_final_project
 
 go 1.18
 

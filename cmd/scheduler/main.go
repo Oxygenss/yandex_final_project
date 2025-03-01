@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Oxygenss/yandex_go_final_project/internal/config"
-	"github.com/Oxygenss/yandex_go_final_project/internal/handler"
-	"github.com/Oxygenss/yandex_go_final_project/internal/service"
-	repository "github.com/Oxygenss/yandex_go_final_project/internal/storage"
+	"github.com/Oxygenss/yandex_final_project/internal/config"
+	"github.com/Oxygenss/yandex_final_project/internal/handler"
+	"github.com/Oxygenss/yandex_final_project/internal/service"
+	repository "github.com/Oxygenss/yandex_final_project/internal/storage"
 )
 
 func main() {
