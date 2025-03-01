@@ -160,12 +160,12 @@ func (s *Service) SearchTasks(search string) ([]models.Task, error) {
 
 func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string, error) {
 	if repeat == "" {
-		return "", fmt.Errorf("нет правила повторения")
+		return "", fmt.Errorf("repeat rule is missing")
 	}
 
 	date, err := time.Parse(DateFormat, dateStr)
 	if err != nil {
-		return "", fmt.Errorf("неверный формат времени: %w", err)
+		return "", fmt.Errorf("invalid time format: %w", err)
 	}
 
 	if strings.HasPrefix(repeat, "d ") {
@@ -173,11 +173,11 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 
 		days, err := strconv.Atoi(daysStr)
 		if err != nil {
-			return "", fmt.Errorf("неверный интервал дня: %w", err)
+			return "", fmt.Errorf("invalid day interval: %w", err)
 		}
 
 		if days <= 0 || days > 400 {
-			return "", fmt.Errorf("интервал дня может быть в пределах от 1 до 400: %w", err)
+			return "", fmt.Errorf("day interval must be between 1 and 400: %w", err)
 		}
 
 		for {
@@ -194,6 +194,6 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 			}
 		}
 	} else {
-		return "", fmt.Errorf("неподдерживаемый формат повторения")
+		return "", fmt.Errorf("unsupported repeat format")
 	}
 }
