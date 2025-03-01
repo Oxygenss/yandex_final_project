@@ -23,3 +23,11 @@ type SignInRequest struct {
 type SignInResponse struct {
 	Token string `json:"token"`
 }
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type SuccessResponse struct {
+	Message string `json:"message"`
+}

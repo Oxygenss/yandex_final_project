@@ -11,6 +11,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Post("/api/signin", h.SignIn)
+	router.Get("/api/nextdate", h.NextDateHandler)
 
 	router.Group(func(r chi.Router) {
 		r.Use(func(next http.Handler) http.Handler {
