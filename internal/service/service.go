@@ -41,13 +41,13 @@ func (s *Service) AddTask(task models.Task) (int64, error) {
 	if task.Date == "" {
 		task.Date = nowFormatted
 	} else {
-		parsedDate, err := time.Parse("DateFormat", task.Date)
+		parsedDate, err := time.Parse(DateFormat, task.Date)
 		if err != nil {
 			return 0, fmt.Errorf("invalid date format. Expected format is YYYYMMDD: %w", err)
 		}
 
 		if parsedDate.Equal(nowDate) {
-			task.Date = parsedDate.Format("DateFormat")
+			task.Date = parsedDate.Format(DateFormat)
 		} else if parsedDate.Before(now) {
 			if task.Repeat == "" {
 				task.Date = nowFormatted
@@ -80,19 +80,19 @@ func (s *Service) EditTask(task models.Task) error {
 	}
 
 	now := time.Now()
-	nowFormatted := now.Format("DateFormat")
-	nowDate, _ := time.Parse("DateFormat", nowFormatted)
+	nowFormatted := now.Format(DateFormat)
+	nowDate, _ := time.Parse(DateFormat, nowFormatted)
 
 	if task.Date == "" {
 		task.Date = nowFormatted
 	} else {
-		parsedDate, err := time.Parse("DateFormat", task.Date)
+		parsedDate, err := time.Parse(DateFormat, task.Date)
 		if err != nil {
 			return fmt.Errorf("invalid date format. Expected format is YYYYMMDD: %w", err)
 		}
 
 		if parsedDate.Equal(nowDate) {
-			task.Date = parsedDate.Format("DateFormat")
+			task.Date = parsedDate.Format(DateFormat)
 		} else if parsedDate.Before(now) {
 			if task.Repeat == "" {
 				task.Date = nowFormatted
@@ -151,7 +151,7 @@ func (s *Service) GetTasks() ([]models.Task, error) {
 func (s *Service) SearchTasks(search string) ([]models.Task, error) {
 	time, err := time.Parse("02.01.2006", search)
 	if err == nil {
-		dateFormatted := time.Format("DateFormat")
+		dateFormatted := time.Format(DateFormat)
 		return s.repository.SearchTasksByDate(dateFormatted)
 	}
 
@@ -163,7 +163,7 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 		return "", fmt.Errorf("нет правила повторения")
 	}
 
-	date, err := time.Parse("DateFormat", dateStr)
+	date, err := time.Parse(DateFormat, dateStr)
 	if err != nil {
 		return "", fmt.Errorf("неверный формат времени: %w", err)
 	}
@@ -183,14 +183,14 @@ func (s *Service) NextDate(now time.Time, dateStr string, repeat string) (string
 		for {
 			date = date.AddDate(0, 0, days)
 			if date.After(now) {
-				return date.Format("DateFormat"), nil
+				return date.Format(DateFormat), nil
 			}
 		}
 	} else if repeat == "y" {
 		for {
 			date = date.AddDate(1, 0, 0)
 			if date.After(now) {
-				return date.Format("DateFormat"), nil
+				return date.Format(DateFormat), nil
 			}
 		}
 	} else {
