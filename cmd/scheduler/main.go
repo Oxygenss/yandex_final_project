@@ -6,8 +6,8 @@ import (
 
 	"github.com/Oxygenss/yandex_final_project/internal/config"
 	"github.com/Oxygenss/yandex_final_project/internal/handler"
+	"github.com/Oxygenss/yandex_final_project/internal/repository"
 	"github.com/Oxygenss/yandex_final_project/internal/service"
-	repository "github.com/Oxygenss/yandex_final_project/internal/storage"
 )
 
 func main() {
@@ -18,10 +18,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	service := service.New(repository)
-	handler := handler.New(*service, *cfg)
+	service := service.NewService(repository)
+	handler := handler.NewHandler(*service, *cfg)
 
-	router := handler.InitRoutes()
+	router := handler.InitRoutes(*cfg)
 
 	serve := cfg.Server.Host + ":" + cfg.Server.Port
 	err = http.ListenAndServe(serve, router)

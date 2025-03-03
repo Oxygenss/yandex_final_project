@@ -23,36 +23,24 @@ type Database struct {
 }
 
 type Auth struct {
-	Password string `yaml:"password" env:"PASSWORD" env-required:"true"`
-	Secret   string `yaml:"secret" env:"SECRET" env-required:"true"`
+	Password string `yaml:"password" env:"AUTH_PASSWORD" env-required:"true"`
+	Secret   string `yaml:"secret" env:"AUTH_SECRET" env-required:"true"`
 }
 
-// Загружаем конфиг из файла
+// Загружаем конфиг из файла и переопределяем переменными окружения
 func MustLoad() *Config {
-	// Получаем путь к файлу из переменной окружения CONFIG_PATH
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
-		configPath = "config.yaml" // Устанавливаем путь по умолчанию, если переменная окружения не установлена
-	}
-
-	// Проверяем, существует ли файл по указанному пути
-	_, err := os.Stat(configPath)
-	if os.IsNotExist(err) {
-		log.Fatalf("Config file not found: %v", err)
+		configPath = "config.yaml"
 	}
 
 	var cfg Config
 
 	// Читаем конфигурацию из файла
-	err = cleanenv.ReadConfig(configPath, &cfg)
+	err := cleanenv.ReadConfig(configPath, &cfg)
 	if err != nil {
 		log.Fatalf("Failed to read config file: %v", err)
 	}
-
-	// Переопределение значений из переменных окружения
-	// if err := cleanenv.ReadEnv(&cfg); err != nil {
-	// 	return nil, err
-	// }
 
 	log.Printf("HOST: %s", cfg.Server.Host)
 	log.Printf("PORT: %s", cfg.Server.Port)

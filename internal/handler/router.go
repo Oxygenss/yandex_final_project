@@ -3,11 +3,12 @@ package handler
 import (
 	"net/http"
 
+	"github.com/Oxygenss/yandex_final_project/internal/config"
 	"github.com/Oxygenss/yandex_final_project/internal/handler/middleware"
 	"github.com/go-chi/chi"
 )
 
-func (h *Handler) InitRoutes() *chi.Mux {
+func (h *Handler) InitRoutes(config config.Config) *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Post("/api/signin", h.SignIn)
@@ -15,7 +16,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 
 	router.Group(func(r chi.Router) {
 		r.Use(func(next http.Handler) http.Handler {
-			return middleware.AuthMiddleware(h.cfg.Auth.Secret, next)
+			return middleware.AuthMiddleware(config, next)
 		})
 
 		r.Post("/api/task", h.AddTask)
