@@ -1,0 +1,8 @@
+server:
+  host: "localhost"
+  port: "7540"
+database:
+  path: "scheduler.db"
+auth:
+  password: "123423432" 
+  secret: "aadfs9fhg-9134hf-981h5fg8h12=f9uq=80g1=38g1=39g"
